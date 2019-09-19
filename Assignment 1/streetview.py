@@ -1,13 +1,12 @@
 # Step 1 : Import relevent packages 
 
-# Packages for Analysis
-
-import matplotlib.pyplot as plt
 import pandas as pd
-import seaborn as sns
+
 
 # Packages for Visuals
 #%matplotlib inline
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Step 2: Import Dataset
 streetview_data = pd.read_csv('svhn.csv')
@@ -24,7 +23,7 @@ y_sub = y[0:9920]
 # Training Data --> 75%
 # Test Data --> 25%
 
-#from sklearn.cross_validation import train_test_split
+#from sklearn import train_test_split
 from sklearn.model_selection import train_test_split
 
 X_train,X_test,y_train,y_test = train_test_split(X_sub, y_sub,

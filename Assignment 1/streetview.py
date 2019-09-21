@@ -1,12 +1,15 @@
 # Step 1 : Import relevent packages 
 
-import pandas as pd
+from sklearn import svm
 
+# Packages for Analysis
+
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
 
 # Packages for Visuals
 #%matplotlib inline
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 # Step 2: Import Dataset
 streetview_data = pd.read_csv('svhn.csv')
@@ -23,14 +26,14 @@ y_sub = y[0:9920]
 # Training Data --> 75%
 # Test Data --> 25%
 
-#from sklearn import train_test_split
+#from sklearn.cross_validation import train_test_split
 from sklearn.model_selection import train_test_split
 
 X_train,X_test,y_train,y_test = train_test_split(X_sub, y_sub,
                                                  test_size = 0.25,
                                                  random_state = 0)
 
-#Step 5: Feature Scaling ----- Applied over the feature data
+# Step 5: Feature Scaling ----- Applied over the feature data
 # Generalize the magnitude
 
 #from sklearn.preprocessing import StandardScaler # Normal distribution
@@ -38,26 +41,30 @@ X_train,X_test,y_train,y_test = train_test_split(X_sub, y_sub,
 #X_train = scale.fit_transform(X_train)
 #X_test = scale.fit_transform(X_test)
 
-# Step 6: Training model using LogisticRegression
+# Step 6: Training model using SVM
+from sklearn.model_selection import GridSearchCV
 
-from sklearn.linear_model import LogisticRegression
+hyper_parameters = {'kernel':('sigmoid','rbf'), 'C':[0.1,1]}
+svc = svm.SVC(gamma="scale")
 
-logisticReg = LogisticRegression(multi_class = 'auto')
+clf = GridSearchCV(estimator=svc,
+                   param_grid=hyper_parameters,
+                   cv=5)
 
-logisticReg.fit(X_train,y_train)
+clf.fit(X_train, y_train)
 
-# Step 7: Making Prediction
+# Step 7:# Making Prediction
 
-predictions = logisticReg.predict(X_test)
+predicted = clf.predict(X_test)
 
-# Step 8: Check for Accuracy
+# Step 8:# Check for Accuracy
 
-score = logisticReg.score(X_test,y_test)
+score = clf.score(X_test, y_test)
 
 # step 9: Make Confusion matrix using seaborn
 from sklearn import metrics
 
-cm = metrics.confusion_matrix(y_test,predictions)
+cm = metrics.confusion_matrix(y_test,predicted)
 
 plt.figure(figsize = (7,7))
 sns.heatmap(cm, annot=True,square = True, cmap = 'Blues_r');

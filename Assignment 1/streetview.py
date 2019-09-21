@@ -1,6 +1,4 @@
-# Step 1 : Import relevent packages 
-
-from sklearn import svm
+# Step 1 
 
 # Packages for Analysis
 
@@ -41,25 +39,21 @@ X_train,X_test,y_train,y_test = train_test_split(X_sub, y_sub,
 #X_train = scale.fit_transform(X_train)
 #X_test = scale.fit_transform(X_test)
 
-# Step 6: Training model using SVM
-from sklearn.model_selection import GridSearchCV
+# Step 6: Training model using LogisticRegression
 
-hyper_parameters = {'kernel':('sigmoid','rbf'), 'C':[0.1,1]}
-svc = svm.SVC(gamma="scale")
+from sklearn.linear_model import LogisticRegression
 
-clf = GridSearchCV(estimator=svc,
-                   param_grid=hyper_parameters,
-                   cv=5)
+logisticReg = LogisticRegression()
 
-clf.fit(X_train, y_train)
+logisticReg.fit(X_train,y_train)
 
-# Step 7:# Making Prediction
+# Step 7: Making Prediction
 
-predicted = clf.predict(X_test)
+predictions = logisticReg.predict(X_test)
 
-# Step 8:# Check for Accuracy
+# Step 8: Check for Accuracy
 
-score = clf.score(X_test, y_test)
+score = logisticReg.score(X_test,y_test)
 
 # step 9: Make Confusion matrix using seaborn
 from sklearn import metrics

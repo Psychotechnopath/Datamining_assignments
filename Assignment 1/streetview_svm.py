@@ -36,10 +36,10 @@ X_train,X_test,y_train,y_test = train_test_split(X_sub, y_sub,
 # Step 5: Feature Scaling ----- Applied over the feature data
 # Generalize the magnitude
 
-#from sklearn.preprocessing import StandardScaler # Normal distribution
-#scale = StandardScaler()
-#X_train = scale.fit_transform(X_train)
-#X_test = scale.fit_transform(X_test)
+from sklearn.preprocessing import StandardScaler # Normal distribution
+scale = StandardScaler()
+X_train = scale.fit_transform(X_train)
+X_test = scale.fit_transform(X_test)
 
 # Step 6: Training model using SVM
 from sklearn.model_selection import GridSearchCV

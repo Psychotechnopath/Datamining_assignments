@@ -1,4 +1,4 @@
-# Step 1 
+# Step 1
 
 # Packages for Analysis
 
@@ -17,7 +17,7 @@ X = streetview_data.iloc[:,:-1].values # selecting all the records from all the 
 y = streetview_data.iloc[:,3072].values # Selecting all the records from last field
 
 #Generate 10% Sub-sample of data
-X_sub = X[0:9920]                                                        
+X_sub = X[0:9920]
 y_sub = y[0:9920]
 
 # step 4: Train/Test split

@@ -1,9 +1,7 @@
-# Step 1 : Import relevent packages 
-
+# Step 1 : Import relevant packages
 from sklearn import svm
 
 # Packages for Analysis
-
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns

@@ -1,6 +1,8 @@
 from sklearn.model_selection import train_test_split, cross_validate
 import openml as oml
 from sklearn.svm import LinearSVC
+import time
+from matplotlib import pyplot as plt
 
 SVHN = oml.datasets.get_dataset(41081)                                   #Load data
 X, y, cats, attrs = SVHN.get_data(dataset_format='array',
@@ -8,12 +10,31 @@ X, y, cats, attrs = SVHN.get_data(dataset_format='array',
 
 X_90_percent, X_10_percent, y_90_percent, y_10_percent = train_test_split(X, y, test_size=0.1, stratify=y, random_state=47)
 svc = LinearSVC()
-scores = cross_validate(svc, X_10_percent, y_10_percent, cv=3, scoring=['accuracy'], return_train_score=True)
+
+test_accuracy_list = []
+test_accuracy_std_list = []
+time_execution_list = []
+training_percentages = [1,2,3,4,5,6,7,8,9,10]
+
+for i in range(1,11):
+    start = time.time()
+    scores = cross_validate(svc, X_10_percent[:i*992], y_10_percent[0:i*992], cv=3, scoring=['accuracy'])
+    test_accuracy_list.append(scores['test_accuracy'])
+    test_accuracy_std_list.append(scores['test_accuracy'].std())
+    stop = time.time()
+    duration = start-stop
+    time_execution_list.append(duration)
+    print("Training complete on {}% subsample of data".format(i))
 
 
+plt.subplot(2,1,1)
+plt.plot(training_percentages, test_accuracy_list)
+plt.title('Testing accuracy and training times plot', '-o')
+plt.xlabel("Percentage of data used")
+plt.ylabel("Testing accuracy")
 
-#Report training accuracy + std, testing accuracy + std
-print("Training accuracy of models {}".format(scores['train_accuracy']))            #Training accuracy for 3 folds:
-print("Standard deviation of training accuracies are {}".format(scores['train_accuracy'].std())) #std over 3 folds:
-print("Testing accuracy of models {}".format(scores['test_accuracy']))               #Testing accuracy for 3 folds:
-print("Standard deviation of Training accuracies {}".format(scores['test_accuracy'].std()))      #std over 3 folds:
+plt.subplot(2,1,2)
+plt.plot(training_percentages,time_execution_list , '-o')
+plt.xlabel("Percentage of data used")
+plt.ylabel("Execution time in seconds")
+plt.show()

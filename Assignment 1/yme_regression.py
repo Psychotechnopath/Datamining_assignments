@@ -1,4 +1,4 @@
-from sklearn.model_selection import StratifiedKFold, cross_validate
+from sklearn.model_selection import train_test_split, cross_validate
 import openml as oml
 from sklearn.linear_model import LogisticRegression
 
@@ -8,12 +8,13 @@ X, y, cats, attrs = SVHN.get_data(dataset_format='array',
     target=SVHN.default_target_attribute)
 
 
-skfold = StratifiedKFold(3, shuffle=False, random_state=0)
+X_90_percent, X_10_percent, y_90_percent, y_10_percent = train_test_split(X, y, test_size=0.1, stratify=y)
 
 logisticReg = LogisticRegression()
-scores = cross_validate(logisticReg, X_sub, y_sub, cv=skfold, scoring=['accuracy'], return_train_score=True)
+scores = cross_validate(logisticReg, X_10_percent, y_10_percent, cv=3, scoring=['accuracy'], return_train_score=True)
 
-print("Training accuracy of models {}".format(scores['train_accuracy']))
-print("Standard deviation of training accuracies are {}".format(scores['train_accuracy'].std()))
-print("Testing accuracy of models {}".format(scores['test_accuracy']))
-print("Standard deviation of Training accuracies {}".format(scores['test_accuracy'].std()))
+#Report training accuracy + std, testing accuracy + std
+print("Training accuracy of models {}".format(scores['train_accuracy']))            #Training accuracy for 3 folds:
+print("Standard deviation of training accuracies are {}".format(scores['train_accuracy'].std())) #std over 3 folds:
+print("Testing accuracy of models {}".format(scores['test_accuracy']))               #Testing accuracy for 3 folds:
+print("Standard deviation of Training accuracies {}".format(scores['test_accuracy'].std()))      #std over 3 folds:

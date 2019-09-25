@@ -21,7 +21,7 @@ training_percentages = [1,2,3,4,5,6,7,8,9,10]
 
 for i in range(1,11):
     start = time.time()
-    scores = cross_validate(logisticReg, X_10_percent[:i*992], y_10_percent[0:i*992], cv=3, scoring=['accuracy'])
+    scores = cross_validate(logisticReg, X_10_percent[:i*992], y_10_percent[0:i*992], cv=3, scoring=['accuracy'], n_jobs=-1)
     test_accuracy_list.append(scores['test_accuracy'])
     test_accuracy_std_list.append(scores['test_accuracy'].std())
     stop = time.time()
@@ -31,8 +31,8 @@ for i in range(1,11):
 
 
 plt.subplot(2,1,1)
-plt.plot(training_percentages, test_accuracy_list)
-plt.title('Testing accuracy and training times plot', '-o')
+plt.plot(training_percentages, test_accuracy_list, '-o')
+plt.title('Testing accuracy and training times plot')
 plt.xlabel("Percentage of data used")
 plt.ylabel("Testing accuracy")
 

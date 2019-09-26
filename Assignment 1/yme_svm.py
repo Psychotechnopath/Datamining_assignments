@@ -16,15 +16,19 @@ test_accuracy_std_list = []
 time_execution_list = []
 training_percentages = [1,2,3,4,5,6,7,8,9,10]
 
-for i in range(1,11):
-    start = time.time()
-    scores = cross_validate(svc, X_10_percent[:i*992], y_10_percent[0:i*992], cv=3, scoring=['accuracy'], n_jobs=-1)
-    test_accuracy_list.append(scores['test_accuracy'])
-    test_accuracy_std_list.append(scores['test_accuracy'].std())
-    stop = time.time()
-    duration = start-stop
-    time_execution_list.append(duration)
-    print("Training complete on {}% subsample of data".format(i))
+
+cross_validate(X_10_percent, y_10_percent, return_train_score=True, )
+
+#
+# for i in range(1,11):
+#     start = time.time()
+#     scores = cross_validate(svc, X_10_percent[:i*992], y_10_percent[0:i*992], cv=3, scoring=['accuracy'], n_jobs=-1)
+#     test_accuracy_list.append(scores['test_accuracy'])
+#     test_accuracy_std_list.append(scores['test_accuracy'].std())
+#     stop = time.time()
+#     duration = start-stop
+#     time_execution_list.append(duration)
+#     print("Training complete on {}% subsample of data".format(i))
 
 
 plt.subplot(2,1,1)

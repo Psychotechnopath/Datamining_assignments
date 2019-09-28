@@ -1,44 +1,37 @@
 from sklearn.model_selection import train_test_split, cross_validate
 import openml as oml
 from sklearn.svm import LinearSVC
-import time
-from matplotlib import pyplot as plt
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.linear_model import LogisticRegression
+import numpy as np
 
 SVHN = oml.datasets.get_dataset(41081)                                   #Load data
 X, y, cats, attrs = SVHN.get_data(dataset_format='array',
     target=SVHN.default_target_attribute)
 
-X_90_percent, X_10_percent, y_90_percent, y_10_percent = train_test_split(X, y, test_size=0.1, stratify=y, random_state=47)
+X_gray_std = np.load("std_grayscale_data.npy")
+
+#Initialize default logistic regression
+logisticReg = LogisticRegression()
+
+#Initialize default knn classifier
+knn = KNeighborsClassifier()
+
+#Initialize default linear support vector machine
 svc = LinearSVC()
 
-test_accuracy_list = []
-test_accuracy_std_list = []
-time_execution_list = []
-training_percentages = [1,2,3,4,5,6,7,8,9,10]
 
 
-cross_validate(X_10_percent, y_10_percent, return_train_score=True, )
+X_gray_std_90_percent, X_gray_std_10_percent, y_90_percent, y_10_percent = train_test_split(X_gray_std, y, test_size=0.1, stratify=y, random_state=47)
 
-#
-# for i in range(1,11):
-#     start = time.time()
-#     scores = cross_validate(svc, X_10_percent[:i*992], y_10_percent[0:i*992], cv=3, scoring=['accuracy'], n_jobs=-1)
-#     test_accuracy_list.append(scores['test_accuracy'])
-#     test_accuracy_std_list.append(scores['test_accuracy'].std())
-#     stop = time.time()
-#     duration = start-stop
-#     time_execution_list.append(duration)
-#     print("Training complete on {}% subsample of data".format(i))
+#Use cross_validate with regular CV (As sample is already stratified, and we were not asked to use StratifiedKfold)
+scores = cross_validate(logisticReg, X_gray_std_10_percent, y_10_percent, cv=3, scoring=['accuracy'], return_train_score=True)
 
 
-plt.subplot(2,1,1)
-plt.plot(training_percentages, test_accuracy_list, '-o')
-plt.title('Testing accuracy and training times plot')
-plt.xlabel("Percentage of data used")
-plt.ylabel("Testing accuracy")
 
-plt.subplot(2,1,2)
-plt.plot(training_percentages,time_execution_list , '-o')
-plt.xlabel("Percentage of data used")
-plt.ylabel("Execution time in seconds")
-plt.show()
+#Report training accuracy + std, testing accuracy + std
+print("Training accuracy of models {}".format(scores['train_accuracy']))            #Training accuracy for 3 folds:
+print("Standard deviation of training accuracies are {}".format(scores['train_accuracy'].std())) #std over 3 folds:
+print("Testing accuracy of models {}".format(scores['test_accuracy']))               #Testing accuracy for 3 folds:
+print("Standard deviation of Training accuracies {}".format(scores['test_accuracy'].std()))      #std over 3 folds:
+

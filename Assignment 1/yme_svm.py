@@ -22,7 +22,7 @@ knn = KNeighborsClassifier()
 #Initialize default linear support vector machine
 svc = LinearSVC()
 
-pipeline= Pipeline([("PCA", PCA(n_components='mle', svd_solver='full')), ("svm", LinearSVC())])
+pipeline= Pipeline([("PCA", PCA(n_components=160, svd_solver='auto')), ("svm", LinearSVC())])
 print(pipeline.named_steps["PCA"])
 
 X_gray_std_90_percent, X_gray_std_10_percent, y_90_percent, y_10_percent = train_test_split(X_gray_std, y, test_size=0.1, stratify=y, random_state=47)

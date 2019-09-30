@@ -25,13 +25,13 @@ svc = LinearSVC()
 X_gray_std_90_percent, X_gray_std_10_percent, y_90_percent, y_10_percent = train_test_split(X_gray_std, y, test_size=0.1, stratify=y, random_state=47)
 
 
-param_grid_course = {'C': [1e-12, 1e-6, 1e-4, 1e-2, 1e-1, 1, 1e1, 1e2, 1e4, 1e6, 1e12]}
+param_grid_course = {'C': [1e-5 ,1e-4, 1e-3, 1e-2 ,1e-1 ,1, 1e2, 1e3, 1e4, 1e5]}
 param_grid2 = {'n_neighbors': [5,15,25,35,45]}
 # using the default scoring of accuracy:
 
 #In GridSearchCV we use the default cv, as it implements Stratified K-folds cross-validation with three folds,
 # From documentation: For integer/None inputs, if the estimator is a classifier and y is either binary or multiclass, StratifiedKFold is used.
-grid = GridSearchCV(knn, param_grid=param_grid2, n_jobs=-1, cv=None, scoring=['accuracy'], return_train_score=True, refit='accuracy')
+grid = GridSearchCV(logisticReg, param_grid=param_grid_course, n_jobs=-1, cv=None, scoring=['accuracy'], return_train_score=True, refit='accuracy')
 grid.fit(X_gray_std_10_percent, y_10_percent)
 print("Grid-Search with accuracy")
 print("Best parameters:", grid.best_params_)
@@ -39,30 +39,6 @@ print("Best cross-validation score (accuracy)): {:.3f}".format(grid.best_score_)
 print("CV scores {}".format(grid.cv_results_))
 
 cvresults_forfile = grid.cv_results_
-f = open("cvresults_file.pkl","wb")
+f = open("C:/Users/Yme/Documents/MEGA/Master DSE/Data Mining/Assignments/Assignment 1/cache/logreg_fine.pkl","wb")
 pickle.dump(cvresults_forfile,f)
 f.close()
-
-# print(grid.cv_results_['params'])
-# print(grid.cv_results_['params'])
-#
-# print(grid.cv_results_['split1_train_accuracy'])
-# print(type(grid.cv_results_['split1_train_accuracy']))
-#
-# plt.subplot(2,1,2)
-# plt.title('Training and testing accuracies for KNN in a Grid Search')
-# plt.plot(grid.cv_results_['param_n_neighbors'], grid.cv_results_['split0_train_accuracy'], '-o')
-# plt.plot(grid.cv_results_['param_n_neighbors'], grid.cv_results_['split1_train_accuracy'], '-o')
-# plt.plot(grid.cv_results_['param_n_neighbors'], grid.cv_results_['split2_train_accuracy'], '-o')
-# plt.legend(['Fold 1', 'Fold 2', 'Fold 3'], loc='upper right')
-# plt.xlabel("Number of neighbors")
-# plt.ylabel("Training Accuracy")
-#
-# plt.plot(grid.cv_results_['param_n_neighbors'], grid.cv_results_['split0_test_accuracy'], '-o')
-# plt.plot(grid.cv_results_['param_n_neighbors'], grid.cv_results_['split1_test_accuracy'], '-o')
-# plt.plot(grid.cv_results_['param_n_neighbors'], grid.cv_results_['split2_test_accuracy'], '-o')
-# plt.legend(['Fold 1', 'Fold 2', 'Fold 3'], loc='upper right')
-# plt.xlabel("Number of neighbors")
-# plt.ylabel("Testing Accuracy")
-# plt.show()
-

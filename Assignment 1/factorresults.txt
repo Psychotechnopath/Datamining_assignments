@@ -1,0 +1,20 @@
+knn 20 factors: 0.19378
+knn 40 factors: 0.19318
+knn 60 factors: 0.19126
+knn 80 factors: 0.19066
+knn 160 factors:0.17715
+knn 320 factors: 0.1518
+
+svm 20 factors: 0.18954
+svm 40 factors: 0.18863
+svm 60 factors: 0.18612
+svm 80 factors: 0.18579
+svm 160 factors:0.18450
+svm 320 factors:0.18340
+
+logreg 20 factors: 0.19005
+logreg 40 factors: 0.19085
+logreg 60 factors: 0.18894
+logreg 80 factors: 0.18692
+logreg 160 factors: 0.18561
+logreg 320 factors:0.18380

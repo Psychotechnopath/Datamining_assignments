@@ -39,6 +39,6 @@ print("Best cross-validation score (accuracy)): {:.3f}".format(grid.best_score_)
 print("CV scores {}".format(grid.cv_results_))
 
 cvresults_forfile = grid.cv_results_
-f = open("C:/Users/Yme/Documents/MEGA/Master DSE/Data Mining/Assignments/Assignment 1/cache/logreg_fine.pkl","wb")
+f = open("C:/Users/Yme/Documents/MEGA/Master DSE/Data Mining/Assignments/Assignment 1/saved_files/logreg_fine.pkl","wb")
 pickle.dump(cvresults_forfile,f)
 f.close()

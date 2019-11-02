@@ -1,1 +1,0 @@
-print("Hello world, This is assignment 2")

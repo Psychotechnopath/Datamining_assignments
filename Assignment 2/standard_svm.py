@@ -54,7 +54,7 @@ def calculate_rf_input(score_list_model, classification=True):
     if classification:
         rf_input = np.array([1 - np.mean(i['test_accuracy']) for i in score_list_model]) #Calculate the means out of the returned accuracy from the standard svm
     else:
-        rf_input = np.array([abs(np.mean(i['neg_mean_squared_error'])) for i in score_list_model])
+        rf_input = np.array([abs(np.mean(i['test_neg_mean_squared_error'])) for i in score_list_model])
     return rf_input
 
 
@@ -196,20 +196,7 @@ def q1_30it_callstack(scoring_metric: str,
 # final_param_list = q1_30it_callstack('accuracy', c_points_gamma_fixed, gamma_points_c_fixed, c_points, gamma_points,
 #                  "C varied, gamma fixed at Gamma =1/24", "Gamma varied, C fixed at C=1 ", classification=True)
 
-# with open('final_param_list.pkl', 'wb') as f:
+# with open('final_param_list_svm.pkl', 'wb') as f:
 #     pickle.dump(final_param_list, f)
 
-with open('final_param_list.pkl', 'rb') as f:
-    final_param_list_loaded = pickle.load(f)
 
-scores = surrogate_model_fitter(final_param_list_loaded, 'accuracy')
-true_scores = calculate_rf_input(scores, classification=True)
-print(true_scores)
-print(len(true_scores))
-
-
-#argsort
-#Remove data
-#Re-run models
-def q2_callstack():
-    pass

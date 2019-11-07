@@ -14,3 +14,4 @@ learning_rate_max_depth_fixed = np.array([(l, 1) for l in lr])   #Create a np.ar
 max_depth_learning_rate_fixed = np.array([(0, m) for m in max_depth])       #Create a np.array where max_depth varies and learning_rate is fixed
 
 gbr = GBR(n_estimators=1000, max_depth=0, learning_rate=0)
+

@@ -27,8 +27,6 @@ c_points = np.logspace(-12,12, 25)                                      #Create 
 gamma_points = np.logspace(-12, 12, 25)                                 #Create a range of parameter gamma, on a logarithmic scale, from 1e-12 to 1e12
 sample_c = np.random.choice(c_points, 10 , replace=False)               #Sample 10 random points out of the parameter c range
 sample_g = np.random.choice(gamma_points, 10, replace=False)            #Sample 10 random points out of the parameter gamma range
-print(c_points)
-print(gamma_points)
 
 random_hyperparams = np.array(list(zip(sample_c, sample_g)))            #Zip together sample_c and sample_g, cast it to the right data structure (np.array)
 c_points_gamma_fixed = np.array([(c, 1/24) for c in c_points])          #Create a np.array where c varies and gamma is fixed
@@ -105,20 +103,20 @@ def q1_callstack( random_param: np.array, scoring_metric: str,  fixed_slice: np.
     return ei_score
 
 
-ei_score_cvaried_gamma_fixed  = q1_callstack( random_hyperparams, 'accuracy', c_points_gamma_fixed, c_points, 'C varied, Gamma fixed at Gamma=1/24, iteration 1', classification=True)
-ei_score_gamma_varied_c_fixed = q1_callstack(random_hyperparams, 'accuracy', gamma_points_c_fixed, gamma_points, 'Gamma varied, C fixed at C=1, iteration 1',classification=True)
-
-with open("ei_score_cvaried_gamma_fixed.pkl", "wb") as f:
-    pickle.dump(ei_score_cvaried_gamma_fixed, f)
-
-with open("ei_score_gamma_varied_c_fixed", "wb") as f:
-    pickle.dump(ei_score_gamma_varied_c_fixed, f)
-
-with open("ei_score_cvaried_gamma_fixed.pkl", "rb") as f:
-    ei_score_cvaried_gamma_fixed = pickle.load(f)
-
-with open("ei_score_gamma_varied_c_fixed", "rb") as f:
-    ei_score_gamma_varied_c_fixed = pickle.load(f)
+# ei_score_cvaried_gamma_fixed  = q1_callstack( random_hyperparams, 'accuracy', c_points_gamma_fixed, c_points, 'C varied, Gamma fixed at Gamma=1/24, iteration 1', classification=True)
+# ei_score_gamma_varied_c_fixed = q1_callstack(random_hyperparams, 'accuracy', gamma_points_c_fixed, gamma_points, 'Gamma varied, C fixed at C=1, iteration 1',classification=True)
+#
+# with open("ei_score_cvaried_gamma_fixed.pkl", "wb") as f:
+#     pickle.dump(ei_score_cvaried_gamma_fixed, f)
+#
+# with open("ei_score_gamma_varied_c_fixed", "wb") as f:
+#     pickle.dump(ei_score_gamma_varied_c_fixed, f)
+#
+# with open("ei_score_cvaried_gamma_fixed.pkl", "rb") as f:
+#     ei_score_cvaried_gamma_fixed = pickle.load(f)
+#
+# with open("ei_score_gamma_varied_c_fixed", "rb") as f:
+#     ei_score_gamma_varied_c_fixed = pickle.load(f)
 
 def q1_3it_callstack(random_param: np.array,
                      scoring_metric: str,
@@ -154,12 +152,12 @@ def q1_3it_callstack(random_param: np.array,
         print("Iteration {} completed".format(i+2))
     return new_param_list
 
-param_list_four_iterations = q1_3it_callstack(random_hyperparams, 'accuracy', c_points_gamma_fixed, gamma_points_c_fixed, c_points, gamma_points,
-                 "C varied, gamma fixed at Gamma =1/24", "Gamma varied, C fixed at C=1 ", classification=True)
-
-with open("param_list_four_iterations.pkl", "wb") as f:
-    pickle.dump(param_list_four_iterations, f)
-
+# param_list_four_iterations = q1_3it_callstack(random_hyperparams, 'accuracy', c_points_gamma_fixed, gamma_points_c_fixed, c_points, gamma_points,
+#                  "C varied, gamma fixed at Gamma =1/24", "Gamma varied, C fixed at C=1 ", classification=True)
+#
+# with open("param_list_four_iterations.pkl", "wb") as f:
+#     pickle.dump(param_list_four_iterations, f)
+#
 with open("param_list_four_iterations.pkl", "rb") as f:
     param_list_four_iterations_loaded = pickle.load(f)
 
@@ -204,6 +202,14 @@ def q1_30it_callstack(scoring_metric: str,
 with open('final_param_list.pkl', 'rb') as f:
     final_param_list_loaded = pickle.load(f)
 
+scores = surrogate_model_fitter(final_param_list_loaded, 'accuracy')
+true_scores = calculate_rf_input(scores, classification=True)
+print(true_scores)
+print(len(true_scores))
 
+
+#argsort
+#Remove data
+#Re-run models
 def q2_callstack():
     pass
